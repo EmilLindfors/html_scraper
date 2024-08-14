@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, fmt::{self, Debug, Formatter}, sync::Arc};
 
 use scraper::Html;
 
@@ -10,7 +10,7 @@ use crate::{cleaner::TextCleaner, scraper_config::ScrapeConfig, visitor::{Scrape
 /// before building it
 pub struct HtmlScraperBuilder {
     config: Option<String>,
-    cleaner: Option<Box<dyn TextCleaner>>,
+    cleaner: Option<Arc<dyn TextCleaner>>,
 }
 
 impl HtmlScraperBuilder {
@@ -27,7 +27,7 @@ impl HtmlScraperBuilder {
     }
 
     pub fn with_cleaner<T: TextCleaner + 'static>(mut self, cleaner: T) -> Self {
-        self.cleaner = Some(Box::new(cleaner));
+        self.cleaner = Some(Arc::new(cleaner));
         self
     }
 
@@ -53,9 +53,16 @@ impl HtmlScraperBuilder {
 /// 
 /// 
 /// ```
+#[derive(Clone)]
 pub struct HtmlScraper {
     config: Option<String>,
-    cleaner: Option<Box<dyn TextCleaner>>,
+    cleaner: Option<Arc<dyn TextCleaner>>,
+}
+
+impl Debug for HtmlScraper {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        write!(f, "HtmlScraper")
+    }
 }
 
 impl HtmlScraper {

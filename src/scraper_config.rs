@@ -41,6 +41,7 @@ pub trait ScrapeConfig: for<'de> Deserialize<'de> + Sized {
 }
 
 
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(tag = "type")]
 pub enum ScrapeRule {

@@ -1,5 +1,5 @@
 // New trait for text cleaning
-pub trait TextCleaner {
+pub trait TextCleaner: Send + Sync {
     fn clean(&self, text: &str) -> String;
 }
 
